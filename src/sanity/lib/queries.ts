@@ -34,6 +34,16 @@ export const horsesSlugsQuery = defineQuery(`
   }
 `)
 
+export const featuredHorsesQuery = defineQuery(`
+  *[_type == "horse" && status == "active"] | order(name asc) [0...3] {
+    _id,
+    name,
+    slug,
+    breed,
+    mainImage
+  }
+`)
+
 // Pages
 export const pageBySlugQuery = defineQuery(`
   *[_type == "page" && slug.current == $slug][0] {

@@ -2,5 +2,12 @@
 @plugin "@tailwindcss/typography";
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-playfair);
+
+  --color-cream:   #F6F1E7;
+  --color-forest:  #243323;
+  --color-gold:    #B07D3A;
+  --color-gold-light: #D4A05A;
+  --color-ink:     #1A1A18;
 }
