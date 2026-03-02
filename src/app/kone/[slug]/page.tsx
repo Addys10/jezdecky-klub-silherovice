@@ -1,6 +1,7 @@
 import { client } from "@/sanity/lib/client";
 import { horseBySlugQuery, horsesSlugsQuery } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
+import { HorseBySlugQueryResult, HorsesSlugsQueryResult } from "@/../sanity.types";
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,20 +14,20 @@ const statusLabel: Record<string, { label: string; color: string }> = {
 };
 
 export async function generateStaticParams() {
-  const slugs = await client.fetch(horsesSlugsQuery);
+  const slugs = await client.fetch<HorsesSlugsQueryResult>(horsesSlugsQuery);
   return slugs.map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const horse = await client.fetch(horseBySlugQuery, { slug });
+  const horse = await client.fetch<HorseBySlugQueryResult>(horseBySlugQuery, { slug });
   if (!horse) return {};
   return { title: `${horse.name} | JK Šilheřovice` };
 }
 
 export default async function HorseDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const horse = await client.fetch(horseBySlugQuery, { slug });
+  const horse = await client.fetch<HorseBySlugQueryResult>(horseBySlugQuery, { slug });
 
   if (!horse) notFound();
 
@@ -44,7 +45,7 @@ export default async function HorseDetailPage({ params }: { params: Promise<{ sl
           {horse.mainImage ? (
             <Image
               src={urlFor(horse.mainImage).width(800).height(600).fit("crop").url()}
-              alt={horse.mainImage.alt ?? horse.name}
+              alt={horse.mainImage.alt ?? horse.name ?? ""}
               fill
               className="object-cover"
               priority
@@ -99,7 +100,7 @@ export default async function HorseDetailPage({ params }: { params: Promise<{ sl
               <div key={photo._key} className="aspect-square rounded-lg overflow-hidden relative bg-stone-100">
                 <Image
                   src={urlFor(photo).width(400).height(400).fit("crop").url()}
-                  alt={photo.alt ?? horse.name}
+                  alt={photo.alt ?? horse.name ?? ""}
                   fill
                   className="object-cover"
                 />

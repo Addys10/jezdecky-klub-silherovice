@@ -1,6 +1,7 @@
 import { client } from "@/sanity/lib/client";
 import { horsesQuery } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
+import { HorsesQueryResult } from "@/../sanity.types";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -15,7 +16,7 @@ export const metadata = {
 };
 
 export default async function KonePage() {
-  const horses = await client.fetch(horsesQuery);
+  const horses = await client.fetch<HorsesQueryResult>(horsesQuery);
 
   return (
     <div>
@@ -37,7 +38,7 @@ export default async function KonePage() {
                   {horse.mainImage ? (
                     <Image
                       src={urlFor(horse.mainImage).width(400).height(300).fit("crop").url()}
-                      alt={horse.mainImage.alt ?? horse.name}
+                      alt={horse.mainImage.alt ?? horse.name ?? ""}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
