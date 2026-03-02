@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
+import React from "react";
 
 const geist = Geist({
   variable: "--font-geist-sans",
@@ -28,8 +29,6 @@ export default function RootLayout({
             </Link>
             <ul className="flex gap-6 text-sm text-stone-600">
               <li><Link href="/kone" className="hover:text-stone-900 transition-colors">Koně</Link></li>
-              <li><Link href="/o-nas" className="hover:text-stone-900 transition-colors">O nás</Link></li>
-              <li><Link href="/kontakt" className="hover:text-stone-900 transition-colors">Kontakt</Link></li>
             </ul>
           </nav>
         </header>
