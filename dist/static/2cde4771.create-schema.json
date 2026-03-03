@@ -1,0 +1,373 @@
+[
+  {
+    "of": [
+      {
+        "marks": {
+          "annotations": [
+            {
+              "fields": [
+                {
+                  "validation": [
+                    {
+                      "rules": [
+                        {
+                          "flag": "uri",
+                          "constraint": {
+                            "options": {
+                              "scheme": [
+                                "/^http$/",
+                                "/^https$/"
+                              ],
+                              "allowRelative": false,
+                              "relativeOnly": false,
+                              "allowCredentials": false
+                            }
+                          }
+                        }
+                      ],
+                      "level": "error"
+                    }
+                  ],
+                  "name": "href",
+                  "type": "url",
+                  "title": "URL"
+                }
+              ],
+              "name": "link",
+              "type": "object",
+              "title": "Odkaz"
+            }
+          ],
+          "decorators": [
+            {
+              "value": "strong",
+              "title": "Tučné"
+            },
+            {
+              "value": "em",
+              "title": "Kurzíva"
+            }
+          ]
+        },
+        "lists": [
+          {
+            "value": "bullet",
+            "title": "Bulleted list"
+          },
+          {
+            "value": "number",
+            "title": "Numbered list"
+          }
+        ],
+        "styles": [
+          {
+            "value": "normal",
+            "title": "Normální text"
+          },
+          {
+            "value": "h2",
+            "title": "Nadpis H2"
+          },
+          {
+            "value": "h3",
+            "title": "Nadpis H3"
+          },
+          {
+            "value": "blockquote",
+            "title": "Citát"
+          }
+        ],
+        "of": [],
+        "type": "block"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "fields": [
+          {
+            "name": "alt",
+            "type": "string",
+            "title": "Popis obrázku"
+          }
+        ],
+        "type": "image"
+      }
+    ],
+    "name": "blockContent",
+    "type": "array"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "name",
+        "type": "string",
+        "title": "Jméno"
+      },
+      {
+        "options": {
+          "source": "name"
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "slug",
+        "type": "slug",
+        "title": "URL slug"
+      },
+      {
+        "name": "breed",
+        "type": "string",
+        "title": "Plemeno"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "min",
+                "constraint": 1900
+              },
+              {
+                "flag": "max",
+                "constraint": 2026
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "birthYear",
+        "type": "number",
+        "title": "Rok narození"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "Aktivní",
+              "value": "active"
+            },
+            {
+              "title": "V důchodu",
+              "value": "retired"
+            },
+            {
+              "title": "Na prodej",
+              "value": "forSale"
+            }
+          ],
+          "layout": "radio"
+        },
+        "initialValue": "active",
+        "name": "status",
+        "type": "string",
+        "title": "Stav"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "fields": [
+          {
+            "name": "alt",
+            "type": "string",
+            "title": "Popis obrázku"
+          }
+        ],
+        "name": "mainImage",
+        "type": "image",
+        "title": "Hlavní fotka"
+      },
+      {
+        "name": "description",
+        "type": "blockContent",
+        "title": "Popis"
+      },
+      {
+        "of": [
+          {
+            "options": {
+              "hotspot": true
+            },
+            "fields": [
+              {
+                "name": "alt",
+                "type": "string",
+                "title": "Popis obrázku"
+              }
+            ],
+            "type": "image"
+          }
+        ],
+        "name": "photos",
+        "type": "array",
+        "title": "Fotogalerie"
+      },
+      {
+        "name": "sire",
+        "type": "string",
+        "title": "Otec (sire)"
+      },
+      {
+        "name": "dam",
+        "type": "string",
+        "title": "Matka (dam)"
+      },
+      {
+        "of": [
+          {
+            "fields": [
+              {
+                "name": "year",
+                "type": "number",
+                "title": "Rok"
+              },
+              {
+                "name": "event",
+                "type": "string",
+                "title": "Událost"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "name": "milestones",
+        "type": "array",
+        "title": "Milníky"
+      },
+      {
+        "of": [
+          {
+            "fields": [
+              {
+                "name": "title",
+                "type": "string",
+                "title": "Název"
+              },
+              {
+                "validation": [
+                  {
+                    "rules": [
+                      {
+                        "flag": "uri",
+                        "constraint": {
+                          "options": {
+                            "scheme": [
+                              "/^https$/",
+                              "/^http$/"
+                            ],
+                            "allowRelative": false,
+                            "relativeOnly": false,
+                            "allowCredentials": false
+                          }
+                        }
+                      }
+                    ],
+                    "level": "error"
+                  }
+                ],
+                "name": "url",
+                "type": "url",
+                "title": "YouTube URL"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "name": "videos",
+        "type": "array",
+        "title": "Videa (YouTube)"
+      }
+    ],
+    "name": "horse",
+    "type": "document",
+    "title": "Kůň"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "title",
+        "type": "string",
+        "title": "Název stránky"
+      },
+      {
+        "options": {
+          "source": "title"
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "slug",
+        "type": "slug",
+        "title": "URL slug"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "fields": [
+          {
+            "name": "alt",
+            "type": "string",
+            "title": "Popis obrázku"
+          }
+        ],
+        "name": "mainImage",
+        "type": "image",
+        "title": "Hlavní obrázek"
+      },
+      {
+        "name": "body",
+        "type": "blockContent",
+        "title": "Obsah"
+      }
+    ],
+    "name": "page",
+    "type": "document",
+    "title": "Stránka"
+  }
+]

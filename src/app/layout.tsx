@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
-import Link from "next/link";
 import "./globals.css";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { sanityFetch } from "@/sanity/lib/fetch";
+import { siteSettingsQuery } from "@/sanity/lib/queries";
+import { SiteSettingsQueryResult } from "@/../sanity.types";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -14,56 +18,58 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Jezdecký klub Šilheřovice",
-  description: "Jezdecký klub Šilheřovice – výuka jezdectví pro děti i dospělé.",
+  metadataBase: new URL("https://jk-silherovice.cz"),
+  title: {
+    default: "JK Šilheřovice",
+    template: "%s | JK Šilheřovice",
+  },
+  description:
+    "Jezdecký klub Šilheřovice – výuka jezdectví pro děti i dospělé v příjemném prostředí u Opavy.",
+  openGraph: {
+    type: "website",
+    locale: "cs_CZ",
+    url: "https://jk-silherovice.cz",
+    siteName: "Jezdecký klub Šilheřovice",
+    title: "Jezdecký klub Šilheřovice",
+    description:
+      "Výuka jezdectví pro děti i dospělé v příjemném prostředí u Opavy.",
+  },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await sanityFetch<SiteSettingsQueryResult>(siteSettingsQuery);
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SportsClub",
+    name: "Jezdecký klub Šilheřovice",
+    url: "https://jk-silherovice.cz",
+    ...(settings?.email && { email: settings.email }),
+    ...(settings?.phone && { telephone: settings.phone }),
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: settings?.city ?? "Šilheřovice",
+      streetAddress: settings?.address ?? undefined,
+      addressCountry: "CZ",
+    },
+  };
+
   return (
     <html lang="cs">
-      <body className={`${playfair.variable} ${inter.variable} font-sans antialiased bg-cream text-ink`}>
-        <header className="absolute top-0 left-0 right-0 z-10">
-          <nav className="max-w-6xl mx-auto px-6 py-5 sm:py-6 flex items-center justify-between gap-4">
-            <Link
-              href="/"
-              className="font-heading text-xs sm:text-sm tracking-[0.2em] uppercase text-cream/90 hover:text-cream transition-colors shrink-0"
-            >
-              JK Šilheřovice
-            </Link>
-            <ul className="flex gap-4 sm:gap-8 text-[10px] sm:text-xs tracking-[0.15em] uppercase text-cream/70">
-              <li>
-                <Link href="/kone" className="hover:text-cream transition-colors">
-                  Koně
-                </Link>
-              </li>
-              <li>
-                <Link href="/o-nas" className="hover:text-cream transition-colors">
-                  O nás
-                </Link>
-              </li>
-              <li>
-                <Link href="/kontakt" className="hover:text-cream transition-colors">
-                  Kontakt
-                </Link>
-              </li>
-            </ul>
-          </nav>
-        </header>
-
+      <body
+        className={`${playfair.variable} ${inter.variable} font-sans antialiased bg-cream text-ink`}
+      >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <Header />
         {children}
-
-        <footer className="bg-forest text-cream/50 border-t border-cream/10">
-          <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs tracking-widest uppercase">
-            <span>© {new Date().getFullYear()} Jezdecký klub Šilheřovice</span>
-            <Link href="/studio" className="hover:text-cream/80 transition-colors">
-              Studio
-            </Link>
-          </div>
-        </footer>
+        <Footer />
       </body>
     </html>
   );

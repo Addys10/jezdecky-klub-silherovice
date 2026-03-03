@@ -1,4 +1,5 @@
 import { client } from "@/sanity/lib/client";
+import { sanityFetch } from "@/sanity/lib/fetch";
 import { horseBySlugQuery, horsesSlugsQuery } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { HorseBySlugQueryResult, HorsesSlugsQueryResult } from "@/../sanity.types";
@@ -7,10 +8,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-const statusLabel: Record<string, { label: string; color: string }> = {
-  active: { label: "Aktivní", color: "bg-green-100 text-green-800" },
-  retired: { label: "V důchodu", color: "bg-stone-100 text-stone-600" },
-  forSale: { label: "Na prodej", color: "bg-amber-100 text-amber-800" },
+const statusLabel: Record<string, string> = {
+  active: "Aktivní",
+  retired: "V důchodu",
+  forSale: "Na prodej",
 };
 
 export async function generateStaticParams() {
@@ -22,114 +23,247 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const horse = await client.fetch<HorseBySlugQueryResult>(horseBySlugQuery, { slug });
   if (!horse) return {};
-  return { title: `${horse.name} | JK Šilheřovice` };
+  return { title: horse.name ?? "Kůň" };
 }
 
 export default async function HorseDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const horse = await client.fetch<HorseBySlugQueryResult>(horseBySlugQuery, { slug });
+  const horse = await sanityFetch<HorseBySlugQueryResult>(horseBySlugQuery, { slug });
 
   if (!horse) notFound();
 
-  const status = statusLabel[horse.status ?? "active"];
+  const hasPedigree = horse.sire || horse.dam;
+  const hasMilestones = horse.milestones && horse.milestones.length > 0;
 
   return (
-    <div>
-      <Link href="/kone" className="text-sm text-stone-500 hover:text-stone-900 transition-colors mb-6 inline-block">
-        ← Zpět na seznam koní
-      </Link>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-        {/* Hlavní fotka */}
-        <div className="aspect-[4/3] bg-stone-100 rounded-xl overflow-hidden relative">
-          {horse.mainImage ? (
-            <Image
-              src={urlFor(horse.mainImage).width(800).height(600).fit("crop").url()}
-              alt={horse.mainImage.alt ?? horse.name ?? ""}
-              fill
-              className="object-cover"
-              priority
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center text-stone-300 text-8xl">
-              🐴
-            </div>
-          )}
-        </div>
-
-        {/* Info */}
-        <div>
-          <div className="flex items-center gap-3 mb-2">
-            <h1 className="text-3xl font-bold">{horse.name}</h1>
-            {status && (
-              <span className={`text-sm px-3 py-1 rounded-full font-medium ${status.color}`}>
-                {status.label}
+    <>
+      {/* ── SUBHERO ────────────────────────────────────── */}
+      <section className="bg-forest text-cream pt-32 pb-16 sm:pt-36 sm:pb-20">
+        <div className="max-w-6xl mx-auto px-6">
+          <Link
+            href="/kone"
+            className="inline-block text-[10px] tracking-[0.25em] uppercase text-cream/40 hover:text-cream/70 transition-colors mb-8"
+          >
+            ← Všichni koně
+          </Link>
+          <div className="w-8 h-px bg-gold mb-4 sm:mb-6" />
+          <div className="flex items-end flex-wrap gap-4">
+            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-light">
+              <em>{horse.name}</em>
+            </h1>
+            {horse.status && (
+              <span className="mb-1 text-[9px] tracking-[0.2em] uppercase border border-gold/40 text-gold px-3 py-1.5">
+                {statusLabel[horse.status] ?? horse.status}
               </span>
             )}
           </div>
-
-          <dl className="mt-4 space-y-2 text-sm">
-            {horse.breed && (
-              <div className="flex gap-2">
-                <dt className="text-stone-500 w-28 shrink-0">Plemeno</dt>
-                <dd className="font-medium">{horse.breed}</dd>
-              </div>
-            )}
-            {horse.birthYear && (
-              <div className="flex gap-2">
-                <dt className="text-stone-500 w-28 shrink-0">Rok narození</dt>
-                <dd className="font-medium">{horse.birthYear}</dd>
-              </div>
-            )}
-          </dl>
-
-          {horse.description && (
-            <div className="prose prose-stone prose-sm mt-6">
-              <PortableText value={horse.description} />
-            </div>
-          )}
         </div>
-      </div>
+      </section>
 
-      {/* Fotogalerie */}
-      {horse.photos && horse.photos.length > 0 && (
-        <div className="mt-12">
-          <h2 className="text-xl font-semibold mb-4">Fotogalerie</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {horse.photos.map((photo) => (
-              <div key={photo._key} className="aspect-square rounded-lg overflow-hidden relative bg-stone-100">
+      {/* ── HLAVNÍ OBSAH ───────────────────────────────── */}
+      <section className="bg-cream">
+        <div className="max-w-6xl mx-auto px-6 py-16 sm:py-20 lg:py-24">
+          <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-10 lg:gap-16 items-start">
+
+            {/* Foto */}
+            <div className="aspect-[4/3] relative overflow-hidden bg-forest/5">
+              {horse.mainImage ? (
                 <Image
-                  src={urlFor(photo).width(400).height(400).fit("crop").url()}
-                  alt={photo.alt ?? horse.name ?? ""}
+                  src={urlFor(horse.mainImage).width(900).height(675).fit("crop").url()}
+                  alt={horse.mainImage.alt ?? horse.name ?? ""}
                   fill
                   className="object-cover"
+                  priority
                 />
-              </div>
-            ))}
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-8xl opacity-10">🐴</span>
+                </div>
+              )}
+            </div>
+
+            {/* Info */}
+            <div className="lg:pt-4 space-y-8">
+              <dl className="space-y-5">
+                {horse.breed && (
+                  <div>
+                    <dt className="text-[10px] tracking-[0.25em] uppercase text-gold mb-1">Plemeno</dt>
+                    <dd className="text-ink font-medium">{horse.breed}</dd>
+                  </div>
+                )}
+                {horse.birthYear && (
+                  <div>
+                    <dt className="text-[10px] tracking-[0.25em] uppercase text-gold mb-1">Narozena</dt>
+                    <dd className="text-ink font-medium">
+                      {horse.birthYear}{' '}
+                      <span className="text-ink/40 font-normal">({new Date().getFullYear() - horse.birthYear} let)</span>
+                    </dd>
+                  </div>
+                )}
+                <div>
+                  <dt className="text-[10px] tracking-[0.25em] uppercase text-gold mb-1">Status</dt>
+                  <dd className="text-ink font-medium">
+                    {statusLabel[horse.status ?? "active"] ?? "—"}
+                  </dd>
+                </div>
+              </dl>
+
+              {horse.description && (
+                <div className="pt-4 border-t border-ink/8">
+                  <div className="prose prose-stone prose-sm sm:prose-base max-w-none [&_h2]:font-heading [&_h2]:font-light [&_h2]:text-xl [&_h2]:text-ink [&_h2]:mt-6 [&_h2]:mb-2 [&_p]:text-ink/70 [&_p]:leading-relaxed">
+                    <PortableText value={horse.description} />
+                  </div>
+                </div>
+              )}
+            </div>
+
           </div>
         </div>
+      </section>
+
+      {/* ── RODOKMEN + TIMELINE ────────────────────────── */}
+      {(hasPedigree || hasMilestones) && (
+        <section className="bg-cream border-t border-ink/8">
+          <div className="max-w-6xl mx-auto px-6 py-16 sm:py-20 lg:py-24">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+
+              {/* Rodokmen */}
+              {hasPedigree && (
+                <div>
+                  <div className="w-8 h-px bg-gold mb-4 sm:mb-6" />
+                  <h2 className="font-heading text-2xl sm:text-3xl font-light text-ink mb-10">
+                    <em>Rodokmen</em>
+                  </h2>
+                  {/* Strom */}
+                  <div className="relative">
+                    {/* Rodiče */}
+                    <div className="grid grid-cols-2 gap-4 mb-0">
+                      {horse.sire && (
+                        <div className="border border-ink/10 p-4 bg-forest/3 relative">
+                          <p className="text-[9px] tracking-[0.2em] uppercase text-gold mb-1">Otec</p>
+                          <p className="font-heading text-lg font-light italic text-ink">{horse.sire}</p>
+                        </div>
+                      )}
+                      {horse.dam && (
+                        <div className="border border-ink/10 p-4 bg-forest/3">
+                          <p className="text-[9px] tracking-[0.2em] uppercase text-gold mb-1">Matka</p>
+                          <p className="font-heading text-lg font-light italic text-ink">{horse.dam}</p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Spojovací linka */}
+                    <div className="flex justify-center my-0">
+                      <div className="relative w-full h-10">
+                        {/* Vodorovná linka uprostřed */}
+                        <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gold/30" />
+                        {/* Svislá dolů */}
+                        <div className="absolute top-0 left-1/2 w-px h-full bg-gold/30 -translate-x-1/2" />
+                      </div>
+                    </div>
+
+                    {/* Kůň */}
+                    <div className="border border-gold/40 p-5 bg-forest text-cream text-center">
+                      <p className="text-[9px] tracking-[0.2em] uppercase text-gold/70 mb-2">Kůň</p>
+                      <p className="font-heading text-2xl font-light italic">{horse.name}</p>
+                      {horse.breed && (
+                        <p className="text-cream/50 text-xs tracking-wider mt-1">{horse.breed} · {horse.birthYear}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Timeline */}
+              {hasMilestones && (
+                <div>
+                  <div className="w-8 h-px bg-gold mb-4 sm:mb-6" />
+                  <h2 className="font-heading text-2xl sm:text-3xl font-light text-ink mb-10">
+                    <em>Životopis</em>
+                  </h2>
+                  <ol className="relative space-y-0">
+                    {/* Svislá zlatá linka */}
+                    <div className="absolute left-[3.25rem] top-2 bottom-2 w-px bg-gold/20" />
+
+                    {horse.milestones!.map((m, i) => (
+                      <li key={m._key ?? i} className="relative flex gap-6 pb-8 last:pb-0">
+                        {/* Rok */}
+                        <div className="w-10 shrink-0 text-right">
+                          <span className="font-heading text-sm font-light italic text-gold/80 leading-none">
+                            {m.year}
+                          </span>
+                        </div>
+
+                        {/* Tečka */}
+                        <div className="relative flex flex-col items-center shrink-0 mt-[3px]">
+                          <div className="w-2 h-2 rounded-full bg-gold" />
+                        </div>
+
+                        {/* Text */}
+                        <div className="pt-0">
+                          <p className="text-ink/70 text-sm leading-relaxed">{m.event}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              )}
+
+            </div>
+          </div>
+        </section>
       )}
 
-      {/* Videa */}
-      {horse.videos && horse.videos.length > 0 && (
-        <div className="mt-12">
-          <h2 className="text-xl font-semibold mb-4">Videa</h2>
-          <ul className="space-y-2">
-            {horse.videos.map((video) => (
-              <li key={video._key}>
-                <a
-                  href={video.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-stone-700 underline hover:text-stone-900"
-                >
-                  {video.title ?? video.url}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+      {/* ── FOTOGALERIE ────────────────────────────────── */}
+      {horse.photos && horse.photos.length > 0 && (
+        <section className="bg-cream border-t border-ink/8">
+          <div className="max-w-6xl mx-auto px-6 py-16 sm:py-20">
+            <div className="w-8 h-px bg-gold mb-4 sm:mb-6" />
+            <h2 className="font-heading text-2xl sm:text-3xl font-light text-ink mb-8 sm:mb-12">
+              Fotogalerie
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-px sm:bg-ink/8">
+              {horse.photos.map((photo) => (
+                <div key={photo._key} className="aspect-square relative overflow-hidden bg-forest/5 sm:bg-cream">
+                  <Image
+                    src={urlFor(photo).width(500).height(500).fit("crop").url()}
+                    alt={photo.alt ?? horse.name ?? ""}
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-700 ease-out"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
       )}
-    </div>
+
+      {/* ── VIDEA ──────────────────────────────────────── */}
+      {horse.videos && horse.videos.length > 0 && (
+        <section className="bg-forest text-cream">
+          <div className="max-w-6xl mx-auto px-6 py-16 sm:py-20">
+            <div className="w-8 h-px bg-gold mb-4 sm:mb-6" />
+            <h2 className="font-heading text-2xl sm:text-3xl font-light mb-10">
+              <em>Videa</em>
+            </h2>
+            <ul className="space-y-4">
+              {horse.videos.map((video) => (
+                <li key={video._key}>
+                  <a
+                    href={video.url ?? "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-4 text-cream/60 hover:text-cream transition-colors duration-300"
+                  >
+                    <span className="w-5 h-px bg-gold group-hover:w-10 transition-all duration-300 shrink-0" />
+                    <span className="text-sm tracking-wide">{video.title ?? video.url}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+    </>
   );
 }

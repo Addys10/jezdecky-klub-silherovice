@@ -23,6 +23,9 @@ export const horseBySlugQuery = defineQuery(`
     status,
     mainImage,
     description,
+    sire,
+    dam,
+    milestones,
     photos,
     videos
   }
@@ -41,6 +44,33 @@ export const featuredHorsesQuery = defineQuery(`
     slug,
     breed,
     mainImage
+  }
+`)
+
+// Site settings (singleton)
+export const siteSettingsQuery = defineQuery(`
+  *[_type == "siteSettings"][0] {
+    address,
+    city,
+    phone,
+    email,
+    facebook,
+    instagram,
+    openingHours,
+    heroImage
+  }
+`)
+
+// Gallery — all horses with photos
+export const galleryQuery = defineQuery(`
+  *[_type == "horse" && defined(photos) && count(photos) > 0] | order(name asc) {
+    name,
+    "slug": slug.current,
+    "photos": photos[] {
+      _key,
+      alt,
+      asset
+    }
   }
 `)
 

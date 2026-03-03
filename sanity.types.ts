@@ -13,6 +13,54 @@
  */
 
 // Source: schema.json
+export type SiteSettings = {
+  _id: string;
+  _type: "siteSettings";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  address?: string;
+  city?: string;
+  phone?: string;
+  email?: string;
+  facebook?: string;
+  instagram?: string;
+  heroImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  openingHours?: Array<{
+    days?: string;
+    hours?: string;
+    _key: string;
+  }>;
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
 export type Page = {
   _id: string;
   _type: "page";
@@ -37,53 +85,40 @@ export type Page = {
   body?: BlockContent;
 };
 
-export type BlockContent = Array<{
-  children?: Array<{
-    marks?: Array<string>;
-    text?: string;
-    _type: "span";
-    _key: string;
-  }>;
-  style?: "normal" | "h2" | "h3" | "blockquote";
-  listItem?: "bullet" | "number";
-  markDefs?: Array<{
-    href?: string;
-    _type: "link";
-    _key: string;
-  }>;
-  level?: number;
-  _type: "block";
-  _key: string;
-} | {
-  asset?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-  };
-  media?: unknown;
-  hotspot?: SanityImageHotspot;
-  crop?: SanityImageCrop;
-  alt?: string;
-  _type: "image";
-  _key: string;
-}>;
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
-};
+export type BlockContent = Array<
+  | {
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal" | "h2" | "h3" | "blockquote";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        href?: string;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }
+  | {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+      _key: string;
+    }
+>;
 
 export type Slug = {
   _type: "slug";
@@ -128,6 +163,13 @@ export type Horse = {
     crop?: SanityImageCrop;
     alt?: string;
     _type: "image";
+    _key: string;
+  }>;
+  sire?: string;
+  dam?: string;
+  milestones?: Array<{
+    year?: number;
+    event?: string;
     _key: string;
   }>;
   videos?: Array<{
@@ -233,9 +275,26 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = Page | BlockContent | SanityImageCrop | SanityImageHotspot | Slug | Horse | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes =
+  | SiteSettings
+  | SanityImageCrop
+  | SanityImageHotspot
+  | Page
+  | BlockContent
+  | Slug
+  | Horse
+  | SanityImagePaletteSwatch
+  | SanityImagePalette
+  | SanityImageDimensions
+  | SanityImageMetadata
+  | SanityFileAsset
+  | SanityAssetSourceData
+  | SanityImageAsset
+  | Geopoint;
+
 export declare const internalGroqTypeReferenceTo: unique symbol;
-// Source: ./src/sanity/lib/queries.ts
+
+// Source: src/sanity/lib/queries.ts
 // Variable: horsesQuery
 // Query: *[_type == "horse"] | order(name asc) {    _id,    name,    slug,    breed,    birthYear,    status,    mainImage  }
 export type HorsesQueryResult = Array<{
@@ -259,8 +318,10 @@ export type HorsesQueryResult = Array<{
     _type: "image";
   } | null;
 }>;
+
+// Source: src/sanity/lib/queries.ts
 // Variable: horseBySlugQuery
-// Query: *[_type == "horse" && slug.current == $slug][0] {    _id,    name,    slug,    breed,    birthYear,    status,    mainImage,    description,    photos,    videos  }
+// Query: *[_type == "horse" && slug.current == $slug][0] {    _id,    name,    slug,    breed,    birthYear,    status,    mainImage,    description,    sire,    dam,    milestones,    photos,    videos  }
 export type HorseBySlugQueryResult = {
   _id: string;
   name: string | null;
@@ -282,6 +343,13 @@ export type HorseBySlugQueryResult = {
     _type: "image";
   } | null;
   description: BlockContent | null;
+  sire: string | null;
+  dam: string | null;
+  milestones: Array<{
+    year?: number;
+    event?: string;
+    _key: string;
+  }> | null;
   photos: Array<{
     asset?: {
       _ref: string;
@@ -302,11 +370,86 @@ export type HorseBySlugQueryResult = {
     _key: string;
   }> | null;
 } | null;
+
+// Source: src/sanity/lib/queries.ts
 // Variable: horsesSlugsQuery
 // Query: *[_type == "horse" && defined(slug.current)] {    "slug": slug.current  }
 export type HorsesSlugsQueryResult = Array<{
   slug: string | null;
 }>;
+
+// Source: src/sanity/lib/queries.ts
+// Variable: featuredHorsesQuery
+// Query: *[_type == "horse" && status == "active"] | order(name asc) [0...3] {    _id,    name,    slug,    breed,    mainImage  }
+export type FeaturedHorsesQueryResult = Array<{
+  _id: string;
+  name: string | null;
+  slug: Slug | null;
+  breed: string | null;
+  mainImage: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
+}>;
+
+// Source: src/sanity/lib/queries.ts
+// Variable: siteSettingsQuery
+// Query: *[_type == "siteSettings"][0] {    address,    city,    phone,    email,    facebook,    instagram,    openingHours,    heroImage  }
+export type SiteSettingsQueryResult = {
+  address: string | null;
+  city: string | null;
+  phone: string | null;
+  email: string | null;
+  facebook: string | null;
+  instagram: string | null;
+  openingHours: Array<{
+    days?: string;
+    hours?: string;
+    _key: string;
+  }> | null;
+  heroImage: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
+} | null;
+
+// Source: src/sanity/lib/queries.ts
+// Variable: galleryQuery
+// Query: *[_type == "horse" && defined(photos) && count(photos) > 0] | order(name asc) {    name,    "slug": slug.current,    "photos": photos[] {      _key,      alt,      asset    }  }
+export type GalleryQueryResult = Array<{
+  name: string | null;
+  slug: string | null;
+  photos: Array<{
+    _key: string;
+    alt: string | null;
+    asset: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    } | null;
+  }> | null;
+}>;
+
+// Source: src/sanity/lib/queries.ts
 // Variable: pageBySlugQuery
 // Query: *[_type == "page" && slug.current == $slug][0] {    _id,    title,    slug,    mainImage,    body  }
 export type PageBySlugQueryResult = {
@@ -333,9 +476,12 @@ export type PageBySlugQueryResult = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "\n  *[_type == \"horse\"] | order(name asc) {\n    _id,\n    name,\n    slug,\n    breed,\n    birthYear,\n    status,\n    mainImage\n  }\n": HorsesQueryResult;
-    "\n  *[_type == \"horse\" && slug.current == $slug][0] {\n    _id,\n    name,\n    slug,\n    breed,\n    birthYear,\n    status,\n    mainImage,\n    description,\n    photos,\n    videos\n  }\n": HorseBySlugQueryResult;
-    "\n  *[_type == \"horse\" && defined(slug.current)] {\n    \"slug\": slug.current\n  }\n": HorsesSlugsQueryResult;
-    "\n  *[_type == \"page\" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    mainImage,\n    body\n  }\n": PageBySlugQueryResult;
+    '\n  *[_type == "horse"] | order(name asc) {\n    _id,\n    name,\n    slug,\n    breed,\n    birthYear,\n    status,\n    mainImage\n  }\n': HorsesQueryResult;
+    '\n  *[_type == "horse" && slug.current == $slug][0] {\n    _id,\n    name,\n    slug,\n    breed,\n    birthYear,\n    status,\n    mainImage,\n    description,\n    sire,\n    dam,\n    milestones,\n    photos,\n    videos\n  }\n': HorseBySlugQueryResult;
+    '\n  *[_type == "horse" && defined(slug.current)] {\n    "slug": slug.current\n  }\n': HorsesSlugsQueryResult;
+    '\n  *[_type == "horse" && status == "active"] | order(name asc) [0...3] {\n    _id,\n    name,\n    slug,\n    breed,\n    mainImage\n  }\n': FeaturedHorsesQueryResult;
+    '\n  *[_type == "siteSettings"][0] {\n    address,\n    city,\n    phone,\n    email,\n    facebook,\n    instagram,\n    openingHours,\n    heroImage\n  }\n': SiteSettingsQueryResult;
+    '\n  *[_type == "horse" && defined(photos) && count(photos) > 0] | order(name asc) {\n    name,\n    "slug": slug.current,\n    "photos": photos[] {\n      _key,\n      alt,\n      asset\n    }\n  }\n': GalleryQueryResult;
+    '\n  *[_type == "page" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    mainImage,\n    body\n  }\n': PageBySlugQueryResult;
   }
 }

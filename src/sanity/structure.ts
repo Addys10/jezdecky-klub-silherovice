@@ -1,7 +1,24 @@
-import type {StructureResolver} from 'sanity/structure'
+import type { StructureResolver } from 'sanity/structure'
+import { CogIcon } from '@sanity/icons'
 
-// https://www.sanity.io/docs/structure-builder-cheat-sheet
 export const structure: StructureResolver = (S) =>
   S.list()
-    .title('Content')
-    .items(S.documentTypeListItems())
+    .title('Obsah')
+    .items([
+      // Singleton — Nastavení webu
+      S.listItem()
+        .title('Nastavení webu')
+        .icon(CogIcon)
+        .child(
+          S.document()
+            .schemaType('siteSettings')
+            .documentId('siteSettings')
+        ),
+
+      S.divider(),
+
+      // Ostatní typy (bez siteSettings)
+      ...S.documentTypeListItems().filter(
+        (item) => item.getId() !== 'siteSettings'
+      ),
+    ])

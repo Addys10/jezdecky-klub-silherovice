@@ -82,6 +82,33 @@ export const horse = defineType({
       ],
     }),
     defineField({
+      name: 'sire',
+      title: 'Otec (sire)',
+      type: 'string',
+    }),
+    defineField({
+      name: 'dam',
+      title: 'Matka (dam)',
+      type: 'string',
+    }),
+    defineField({
+      name: 'milestones',
+      title: 'Milníky',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          fields: [
+            defineField({ name: 'year', title: 'Rok', type: 'number' }),
+            defineField({ name: 'event', title: 'Událost', type: 'string' }),
+          ],
+          preview: {
+            select: { title: 'year', subtitle: 'event' },
+          },
+        }),
+      ],
+    }),
+    defineField({
       name: 'videos',
       title: 'Videa (YouTube)',
       type: 'array',
