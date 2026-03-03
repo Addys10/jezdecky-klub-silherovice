@@ -17,13 +17,9 @@ export default async function KontaktPage() {
   return (
     <>
       {/* ── SUBHERO ────────────────────────────────────── */}
-      <section className="bg-forest text-cream pt-32 pb-16 sm:pt-36 sm:pb-20">
+      <section className="bg-cream pt-28 pb-10 sm:pt-32 sm:pb-12 border-b border-ink/8">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="w-8 h-px bg-gold mb-4 sm:mb-6" />
-          <p className="text-[10px] tracking-[0.3em] uppercase text-gold/80 mb-4">
-            JK Šilheřovice
-          </p>
-          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-light leading-tight">
+          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-light leading-tight text-ink">
             <em>Kontakt</em>
           </h1>
         </div>
@@ -39,7 +35,6 @@ export default async function KontaktPage() {
             {/* Adresa */}
             {(settings?.address || settings?.city) && (
               <div>
-                <div className="w-8 h-px bg-gold mb-4" />
                 <p className="text-[10px] tracking-[0.25em] uppercase text-gold font-medium mb-4">Adresa</p>
                 <address className="not-italic text-ink/70 text-base leading-relaxed">
                   {settings.address && <span className="block">{settings.address}</span>}
@@ -51,7 +46,6 @@ export default async function KontaktPage() {
             {/* Telefon + email */}
             {(settings?.phone || settings?.email) && (
               <div>
-                <div className="w-8 h-px bg-gold mb-4" />
                 <p className="text-[10px] tracking-[0.25em] uppercase text-gold font-medium mb-4">Spojení</p>
                 <ul className="space-y-2">
                   {settings?.phone && (
@@ -81,7 +75,6 @@ export default async function KontaktPage() {
             {/* Obsah ze Sanity (doplňující text) */}
             {page?.body && (
               <div>
-                <div className="w-8 h-px bg-gold mb-4" />
                 <div className="prose prose-stone prose-sm max-w-none [&_p]:text-ink/70 [&_p]:leading-relaxed [&_h2]:font-heading [&_h2]:font-normal [&_h2]:text-lg [&_h2]:text-ink [&_h2]:mb-2 [&_h2]:mt-0">
                   <PortableText value={page.body} />
                 </div>
@@ -112,43 +105,6 @@ export default async function KontaktPage() {
         </div>
       </section>
 
-      {/* ── DOPLŇUJÍCÍ INFO ─────────────────────────────── */}
-      <section className="bg-forest text-cream">
-        <div className="max-w-6xl mx-auto px-6 py-12 sm:py-16 grid grid-cols-1 sm:grid-cols-3 gap-8">
-          <div>
-            <div className="w-6 h-px bg-gold mb-4" />
-            <p className="text-[10px] tracking-[0.2em] uppercase text-gold/70 mb-2">Jezdecký klub</p>
-            <p className="text-cream/60 text-sm leading-relaxed">Fungujeme od roku 2005</p>
-          </div>
-          {settings?.facebook && (
-            <div>
-              <div className="w-6 h-px bg-gold mb-4" />
-              <p className="text-[10px] tracking-[0.2em] uppercase text-gold/70 mb-2">Facebook</p>
-              <a href={settings.facebook} target="_blank" rel="noopener noreferrer"
-                className="text-cream/60 text-sm hover:text-cream/90 transition-colors">
-                Navštívit stránku →
-              </a>
-            </div>
-          )}
-          {settings?.instagram && (
-            <div>
-              <div className="w-6 h-px bg-gold mb-4" />
-              <p className="text-[10px] tracking-[0.2em] uppercase text-gold/70 mb-2">Instagram</p>
-              <a href={settings.instagram} target="_blank" rel="noopener noreferrer"
-                className="text-cream/60 text-sm hover:text-cream/90 transition-colors">
-                Sledovat →
-              </a>
-            </div>
-          )}
-          {!settings?.facebook && !settings?.instagram && (
-            <div className="sm:col-span-2">
-              <div className="w-6 h-px bg-gold mb-4" />
-              <p className="text-[10px] tracking-[0.2em] uppercase text-gold/70 mb-2">Sociální sítě</p>
-              <p className="text-cream/40 text-sm">Odkazy lze přidat v Nastavení webu ve Studiu.</p>
-            </div>
-          )}
-        </div>
-      </section>
     </>
   );
 }

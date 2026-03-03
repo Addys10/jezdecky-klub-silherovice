@@ -86,16 +86,19 @@ export default async function HomePage() {
 
       {/* ── INTRO ─────────────────────────────────────────── */}
       {page?.body && (
-        <section className="bg-cream">
-          <div className="max-w-6xl mx-auto px-6 py-16 sm:py-20 lg:py-24 grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-8 lg:gap-16 items-start">
-            <div className="lg:pt-2">
-              <div className="w-8 h-px bg-gold mb-4 sm:mb-6" />
-              <p className="text-xs tracking-[0.25em] uppercase text-gold font-medium">
-                O klubu
-              </p>
-            </div>
-            <div className="prose prose-stone prose-base sm:prose-lg max-w-none [&_h2]:font-heading [&_h2]:font-normal [&_h2]:text-2xl sm:[&_h2]:text-3xl [&_h2]:text-ink">
-              <PortableText value={page.body} />
+        <section className="bg-cream border-t border-ink/8">
+          <div className="max-w-6xl mx-auto px-6 py-16 sm:py-20 lg:py-28">
+            <div className="grid grid-cols-1 lg:grid-cols-[5fr_7fr] lg:items-start">
+              {/* Levý sloupec — nadpis */}
+              <div className="lg:sticky lg:top-28 lg:border-r lg:border-ink/8 lg:pr-16 pb-10 lg:pb-0">
+                <h2 className="font-heading font-light text-ink text-[clamp(3rem,5.5vw,5rem)] leading-[0.92]">
+                  O <em>klubu</em>
+                </h2>
+              </div>
+              {/* Pravý sloupec — obsah */}
+              <div className="lg:pl-16 prose prose-stone prose-base sm:prose-lg max-w-none [&_h2]:font-heading [&_h2]:font-normal [&_h2]:text-2xl sm:[&_h2]:text-3xl [&_h2]:text-ink [&_p]:text-ink/65 [&>p:first-child]:text-lg [&>p:first-child]:text-ink/80">
+                <PortableText value={page.body} />
+              </div>
             </div>
           </div>
         </section>
@@ -108,7 +111,6 @@ export default async function HomePage() {
 
             <div className="flex items-end justify-between mb-10 sm:mb-14">
               <div>
-                <div className="w-8 h-px bg-gold mb-4 sm:mb-6" />
                 <h2 className="font-heading text-3xl sm:text-4xl font-light text-ink">
                   Naši <em>koně</em>
                 </h2>
@@ -128,10 +130,10 @@ export default async function HomePage() {
                   href={`/kone/${horse.slug?.current}`}
                   className="group bg-cream block overflow-hidden"
                 >
-                  <div className="aspect-[4/3] sm:aspect-[3/4] relative overflow-hidden bg-stone-100">
+                  <div className="aspect-[4/3] relative overflow-hidden bg-stone-100">
                     {horse.mainImage ? (
                       <Image
-                        src={urlFor(horse.mainImage).width(600).height(800).fit("crop").url()}
+                        src={urlFor(horse.mainImage).width(600).height(450).fit("crop").url()}
                         alt={horse.name ?? ""}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
@@ -169,32 +171,6 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ── CTA ───────────────────────────────────────────── */}
-      <section className="bg-forest text-cream">
-        <div className="max-w-6xl mx-auto px-6 py-16 sm:py-20 lg:py-24 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          <div>
-            <div className="w-8 h-px bg-gold mb-4 sm:mb-6" />
-            <h2 className="font-heading text-3xl sm:text-4xl font-light leading-tight">
-              Začněte svou<br />
-              <em>jezdeckou cestu</em>
-            </h2>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link
-              href="/kontakt"
-              className="inline-flex items-center justify-center bg-gold text-forest text-xs font-semibold tracking-[0.2em] uppercase px-8 py-4 hover:bg-gold-light transition-colors duration-300"
-            >
-              Kontaktujte nás
-            </Link>
-            <Link
-              href="/o-nas"
-              className="inline-flex items-center justify-center border border-cream/20 text-cream/70 text-xs font-semibold tracking-[0.2em] uppercase px-8 py-4 hover:border-cream/50 hover:text-cream transition-colors duration-300"
-            >
-              O klubu
-            </Link>
-          </div>
-        </div>
-      </section>
     </>
   );
 }

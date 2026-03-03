@@ -22,13 +22,9 @@ export default async function KonePage() {
   return (
     <>
       {/* ── SUBHERO ────────────────────────────────────── */}
-      <section className="bg-forest text-cream pt-32 pb-16 sm:pt-36 sm:pb-20">
+      <section className="bg-cream pt-28 pb-10 sm:pt-32 sm:pb-12 border-b border-ink/8">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="w-8 h-px bg-gold mb-4 sm:mb-6" />
-          <p className="text-[10px] tracking-[0.3em] uppercase text-gold/80 mb-4">
-            Jezdecký klub Šilheřovice
-          </p>
-          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-light leading-tight">
+          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-light leading-tight text-ink">
             Naši <em>koně</em>
           </h1>
         </div>
@@ -90,24 +86,6 @@ export default async function KonePage() {
         </div>
       </section>
 
-      {/* ── CTA ────────────────────────────────────────── */}
-      <section className="bg-forest text-cream">
-        <div className="max-w-6xl mx-auto px-6 py-12 sm:py-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-          <div>
-            <div className="w-8 h-px bg-gold mb-4" />
-            <p className="font-heading text-xl sm:text-2xl font-light">
-              Chcete se stát součástí <em>našeho klubu?</em>
-            </p>
-          </div>
-          <Link
-            href="/kontakt"
-            className="shrink-0 inline-flex items-center gap-3 bg-gold text-forest text-xs font-semibold tracking-[0.2em] uppercase px-8 py-4 hover:bg-gold-light transition-colors duration-300"
-          >
-            Kontaktujte nás
-            <span>→</span>
-          </Link>
-        </div>
-      </section>
     </>
   );
 }

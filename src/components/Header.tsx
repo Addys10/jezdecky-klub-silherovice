@@ -15,7 +15,7 @@ export default function Header() {
   const [open, setOpen] = useState(false)
 
   return (
-    <header className="absolute top-0 left-0 right-0 z-20">
+    <header className="fixed top-0 left-0 right-0 z-20 bg-forest border-b border-cream/10">
 
       {/* ── HLAVNÍ LIŠTA ─────────────────────────────── */}
       <nav className="max-w-6xl mx-auto px-6 py-5 sm:py-6 flex items-center justify-between gap-4">
@@ -24,13 +24,6 @@ export default function Header() {
           onClick={() => setOpen(false)}
           className="flex items-center gap-2 shrink-0 group"
         >
-          <Image
-            src="/logo-jks.png"
-            alt="Logo JK Šilheřovice"
-            width={20}
-            height={30}
-            className="object-contain invert mix-blend-screen opacity-90 group-hover:opacity-100 transition-opacity"
-          />
           <span className="font-heading text-xs sm:text-sm tracking-[0.2em] uppercase text-cream/90 group-hover:text-cream transition-colors">
             JK Šilheřovice
           </span>

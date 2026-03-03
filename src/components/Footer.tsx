@@ -10,19 +10,19 @@ export default async function Footer() {
     <footer className="bg-forest text-cream">
 
       {/* ── INFO + MAPA ──────────────────────────────── */}
-      <div className="max-w-6xl mx-auto px-6 py-10 sm:py-12 grid grid-cols-1 lg:grid-cols-[1fr_1fr_320px] gap-8 border-b border-cream/10">
+      <div className="max-w-6xl mx-auto px-6 py-6 sm:py-8 grid grid-cols-1 lg:grid-cols-[1fr_1fr_1fr_320px] gap-5 lg:gap-8">
 
         <div>
-          <p className="text-[9px] tracking-[0.25em] uppercase text-gold mb-3">Adresa</p>
-          <address className="not-italic text-cream/60 text-sm leading-relaxed">
+          <p className="text-[9px] tracking-[0.25em] uppercase text-gold mb-2">Adresa</p>
+          <address className="not-italic text-cream/60 text-sm leading-snug">
             {settings?.address ?? "Šilheřovice 123"}<br />
             {settings?.city ?? "747 15 Šilheřovice"}
           </address>
         </div>
 
         <div>
-          <p className="text-[9px] tracking-[0.25em] uppercase text-gold mb-3">Kontakt</p>
-          <ul className="text-sm leading-relaxed space-y-1">
+          <p className="text-[9px] tracking-[0.25em] uppercase text-gold mb-2">Kontakt</p>
+          <ul className="text-sm leading-snug space-y-0.5">
             {settings?.phone && (
               <li>
                 <a
@@ -46,24 +46,32 @@ export default async function Footer() {
           </ul>
         </div>
 
-        {/* Mapa jako obdélník */}
-        <div className="h-44 sm:h-52 lg:h-full lg:min-h-[10rem] relative overflow-hidden opacity-60 grayscale">
-          <iframe
-            src="https://www.openstreetmap.org/export/embed.html?bbox=18.255%2C49.930%2C18.315%2C49.960&layer=mapnik&marker=49.9427%2C18.2809"
-            width="100%"
-            height="100%"
-            style={{ border: 0, display: "block" }}
-            loading="lazy"
-            title="Mapa – JK Šilheřovice"
-          />
+        <div>
+          <span className="text-[9px] tracking-[0.2em] uppercase text-cream/25">
+            © {new Date().getFullYear()} JK Šilheřovice
+          </span>
+        </div>
+
+        {/* Mapa */}
+        <div className="h-40 sm:h-48 lg:h-full lg:min-h-[9rem] relative overflow-hidden ring-1 ring-cream/10">
+          <div className="absolute inset-0 grayscale opacity-75 z-0">
+            <iframe
+              src="https://www.openstreetmap.org/export/embed.html?bbox=18.255%2C49.930%2C18.315%2C49.960&layer=mapnik&marker=49.9427%2C18.2809"
+              width="100%"
+              height="100%"
+              style={{ border: 0, display: "block" }}
+              loading="lazy"
+              title="Mapa – JK Šilheřovice"
+            />
+          </div>
+          <div className="absolute inset-0 bg-forest/20 z-10 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 right-0 z-20 px-3 py-1.5 bg-gradient-to-t from-forest/80 to-transparent pointer-events-none">
+            <p className="text-[9px] tracking-[0.2em] uppercase text-cream/50">Šilheřovice</p>
+          </div>
         </div>
 
       </div>
 
-      {/* ── BOTTOM BAR ───────────────────────────────── */}
-      <div className="max-w-6xl mx-auto px-6 py-4 text-[9px] tracking-[0.2em] uppercase text-cream/25">
-        <span>© {new Date().getFullYear()} JK Šilheřovice</span>
-      </div>
 
     </footer>
   );

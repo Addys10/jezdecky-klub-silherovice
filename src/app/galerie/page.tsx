@@ -21,13 +21,9 @@ export default async function GaleriePage() {
   return (
     <>
       {/* ── SUBHERO ───────────────────────────────────────── */}
-      <section className="bg-forest text-cream pt-32 pb-16 sm:pt-36 sm:pb-20">
+      <section className="bg-cream pt-28 pb-10 sm:pt-32 sm:pb-12 border-b border-ink/8">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="w-8 h-px bg-gold mb-4 sm:mb-6" />
-          <p className="text-[10px] tracking-[0.3em] uppercase text-gold/80 mb-3">
-            Jezdecký klub Šilheřovice
-          </p>
-          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-light">
+          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-light text-ink">
             <em>Galerie</em>
           </h1>
         </div>

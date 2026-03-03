@@ -61,14 +61,14 @@ export default async function RootLayout({
   return (
     <html lang="cs">
       <body
-        className={`${playfair.variable} ${inter.variable} font-sans antialiased bg-cream text-ink`}
+        className={`${playfair.variable} ${inter.variable} font-sans antialiased bg-cream text-ink flex flex-col min-h-dvh`}
       >
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <Header />
-        {children}
+        <main className="flex-1">{children}</main>
         <Footer />
       </body>
     </html>
