@@ -3,8 +3,7 @@ import { sanityFetch } from "@/sanity/lib/fetch";
 import { galleryQuery } from "@/sanity/lib/queries";
 import { GalleryQueryResult } from "@/../sanity.types";
 import { urlFor } from "@/sanity/lib/image";
-import Image from "next/image";
-import Link from "next/link";
+import GalleryMasonry from "@/components/GalleryMasonry";
 
 export const metadata: Metadata = {
   title: "Galerie",
@@ -35,29 +34,16 @@ export default async function GaleriePage() {
           {allPhotos.length === 0 ? (
             <p className="text-ink/40 text-sm">Galerie zatím neobsahuje žádné fotografie.</p>
           ) : (
-            <div className="columns-2 sm:columns-3 lg:columns-4 gap-3">
-              {allPhotos.map((photo) => (
-                <div key={photo._key} className="break-inside-avoid mb-3 group relative overflow-hidden bg-forest/5">
-                  <Image
-                    src={urlFor(photo).width(600).auto("format").url()}
-                    alt={photo.alt ?? photo.horseName ?? ""}
-                    width={600}
-                    height={400}
-                    className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                  />
-                  {photo.horseName && (
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-forest/70 to-transparent px-3 py-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                      <Link
-                        href={`/kone/${photo.horseSlug}`}
-                        className="text-cream/90 text-xs tracking-wider font-heading italic hover:text-gold transition-colors"
-                      >
-                        {photo.horseName}
-                      </Link>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+            <GalleryMasonry
+              photos={allPhotos.map((photo) => ({
+                key: photo._key,
+                thumbUrl: urlFor(photo).width(600).auto("format").url(),
+                fullUrl: urlFor(photo).width(1600).auto("format").url(),
+                alt: photo.alt ?? photo.horseName ?? "",
+                horseName: photo.horseName,
+                horseSlug: photo.horseSlug,
+              }))}
+            />
           )}
         </div>
       </section>
