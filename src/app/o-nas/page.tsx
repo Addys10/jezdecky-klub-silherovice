@@ -5,6 +5,7 @@ import { PortableText } from "@portabletext/react";
 
 export const metadata = {
   title: "O nás",
+  description: "Jezdecký klub Šilheřovice funguje od roku 2005. Výuka jezdectví pro děti i dospělé v příjemném prostředí u Opavy.",
 };
 
 const values = [

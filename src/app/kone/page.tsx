@@ -7,6 +7,7 @@ import Link from "next/link";
 
 export const metadata = {
   title: "Naši koně",
+  description: "Poznejte koně Jezdeckého klubu Šilheřovice – česká warmblood i další plemena. Výuka jezdectví pro děti i dospělé.",
 };
 
 const statusConfig: Record<string, { label: string; className: string }> = {

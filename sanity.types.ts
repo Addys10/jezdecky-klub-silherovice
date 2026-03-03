@@ -38,11 +38,6 @@ export type SiteSettings = {
     alt?: string;
     _type: "image";
   };
-  openingHours?: Array<{
-    days?: string;
-    hours?: string;
-    _key: string;
-  }>;
 };
 
 export type SanityImageCrop = {
@@ -403,7 +398,7 @@ export type FeaturedHorsesQueryResult = Array<{
 
 // Source: src/sanity/lib/queries.ts
 // Variable: siteSettingsQuery
-// Query: *[_type == "siteSettings"][0] {    address,    city,    phone,    email,    facebook,    instagram,    openingHours,    heroImage  }
+// Query: *[_type == "siteSettings"][0] {    address,    city,    phone,    email,    facebook,    instagram,    heroImage  }
 export type SiteSettingsQueryResult = {
   address: string | null;
   city: string | null;
@@ -411,11 +406,6 @@ export type SiteSettingsQueryResult = {
   email: string | null;
   facebook: string | null;
   instagram: string | null;
-  openingHours: Array<{
-    days?: string;
-    hours?: string;
-    _key: string;
-  }> | null;
   heroImage: {
     asset?: {
       _ref: string;
@@ -480,7 +470,7 @@ declare module "@sanity/client" {
     '\n  *[_type == "horse" && slug.current == $slug][0] {\n    _id,\n    name,\n    slug,\n    breed,\n    birthYear,\n    status,\n    mainImage,\n    description,\n    sire,\n    dam,\n    milestones,\n    photos,\n    videos\n  }\n': HorseBySlugQueryResult;
     '\n  *[_type == "horse" && defined(slug.current)] {\n    "slug": slug.current\n  }\n': HorsesSlugsQueryResult;
     '\n  *[_type == "horse" && status == "active"] | order(name asc) [0...3] {\n    _id,\n    name,\n    slug,\n    breed,\n    mainImage\n  }\n': FeaturedHorsesQueryResult;
-    '\n  *[_type == "siteSettings"][0] {\n    address,\n    city,\n    phone,\n    email,\n    facebook,\n    instagram,\n    openingHours,\n    heroImage\n  }\n': SiteSettingsQueryResult;
+    '\n  *[_type == "siteSettings"][0] {\n    address,\n    city,\n    phone,\n    email,\n    facebook,\n    instagram,\n    heroImage\n  }\n': SiteSettingsQueryResult;
     '\n  *[_type == "horse" && defined(photos) && count(photos) > 0] | order(name asc) {\n    name,\n    "slug": slug.current,\n    "photos": photos[] {\n      _key,\n      alt,\n      asset\n    }\n  }\n': GalleryQueryResult;
     '\n  *[_type == "page" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    mainImage,\n    body\n  }\n': PageBySlugQueryResult;
   }

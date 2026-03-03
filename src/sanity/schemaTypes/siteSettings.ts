@@ -1,4 +1,4 @@
-import { defineArrayMember, defineField, defineType } from 'sanity'
+import { defineField, defineType } from 'sanity'
 import { CogIcon } from '@sanity/icons'
 
 export const siteSettings = defineType({
@@ -44,23 +44,6 @@ export const siteSettings = defineType({
       options: { hotspot: true },
       fields: [
         defineField({ name: 'alt', type: 'string', title: 'Popis obrázku' }),
-      ],
-    }),
-    defineField({
-      name: 'openingHours',
-      title: 'Provozní doba',
-      type: 'array',
-      of: [
-        defineArrayMember({
-          type: 'object',
-          fields: [
-            defineField({ name: 'days', title: 'Dny', type: 'string' }),
-            defineField({ name: 'hours', title: 'Hodiny', type: 'string' }),
-          ],
-          preview: {
-            select: { title: 'days', subtitle: 'hours' },
-          },
-        }),
       ],
     }),
   ],

@@ -56,7 +56,6 @@ export const siteSettingsQuery = defineQuery(`
     email,
     facebook,
     instagram,
-    openingHours,
     heroImage
   }
 `)

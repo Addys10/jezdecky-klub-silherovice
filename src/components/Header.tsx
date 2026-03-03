@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const links = [
   { href: '/kone', label: 'Koně' },
@@ -21,9 +22,18 @@ export default function Header() {
         <Link
           href="/"
           onClick={() => setOpen(false)}
-          className="font-heading text-xs sm:text-sm tracking-[0.2em] uppercase text-cream/90 hover:text-cream transition-colors shrink-0"
+          className="flex items-center gap-2 shrink-0 group"
         >
-          JK Šilheřovice
+          <Image
+            src="/logo-jks.png"
+            alt="Logo JK Šilheřovice"
+            width={20}
+            height={30}
+            className="object-contain invert mix-blend-screen opacity-90 group-hover:opacity-100 transition-opacity"
+          />
+          <span className="font-heading text-xs sm:text-sm tracking-[0.2em] uppercase text-cream/90 group-hover:text-cream transition-colors">
+            JK Šilheřovice
+          </span>
         </Link>
 
         {/* Desktop nav */}

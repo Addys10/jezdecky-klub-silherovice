@@ -5,6 +5,7 @@ import { PortableText } from "@portabletext/react";
 
 export const metadata = {
   title: "Kontakt",
+  description: "Kontaktujte Jezdecký klub Šilheřovice. Najdete nás v Šilheřovicích u Opavy – adresa, telefon a e-mail.",
 };
 
 export default async function KontaktPage() {
@@ -73,22 +74,6 @@ export default async function KontaktPage() {
                       </a>
                     </li>
                   )}
-                </ul>
-              </div>
-            )}
-
-            {/* Provozní doba */}
-            {settings?.openingHours && settings.openingHours.length > 0 && (
-              <div>
-                <div className="w-8 h-px bg-gold mb-4" />
-                <p className="text-[10px] tracking-[0.25em] uppercase text-gold font-medium mb-4">Provozní doba</p>
-                <ul className="space-y-1">
-                  {settings.openingHours.map((oh: { _key?: string; days?: string; hours?: string }, i: number) => (
-                    <li key={oh._key ?? i} className="text-ink/70 text-sm">
-                      <span className="text-ink/40 w-20 inline-block">{oh.days}</span>
-                      {oh.hours}
-                    </li>
-                  ))}
                 </ul>
               </div>
             )}
