@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Jezdecký klub Šilheřovice
 
-## Getting Started
+Web jezdeckého klubu Šilheřovice. Postaveno na Next.js + Sanity.io, nasazeno na Vercel.
 
-First, run the development server:
+## Stack
+
+- **Next.js 16** (App Router, SSG + ISR)
+- **Sanity.io** — headless CMS, Studio na `/studio`
+- **Tailwind CSS v4**
+- **Vercel** — hosting
+
+## Stránky
+
+| Route | Popis |
+|---|---|
+| `/` | Úvodní stránka s hero, O klubu, náhled koní |
+| `/kone` | Seznam všech koní |
+| `/kone/[slug]` | Detail koně — foto, info, rodokmen, galerie, videa |
+| `/galerie` | Fotogalerie všech koní |
+| `/o-nas` | O klubu |
+| `/kontakt` | Kontakt s mapou |
+| `/studio` | Sanity Studio (CMS) |
+
+## Lokální vývoj
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Otevři [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Proměnné prostředí
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Vytvoř `.env.local`:
 
-## Learn More
+```env
+NEXT_PUBLIC_SANITY_PROJECT_ID=99iyhu3q
+NEXT_PUBLIC_SANITY_DATASET=production
+SANITY_API_READ_TOKEN=...
+SANITY_REVALIDATE_SECRET=...
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Sanity schema
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Po změně schématu:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npx sanity@latest schema extract --path schema.json
+npx sanity@latest typegen generate
+npx sanity@latest schema deploy
+```
 
-## Deploy on Vercel
+## Revalidace obsahu
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Sanity webhook volá `/api/revalidate?secret=...` po každém publikování. Nastavení: **manage.sanity.io → API → Webhooks**.
