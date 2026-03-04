@@ -1,16 +1,15 @@
 import { sanityFetch } from "@/sanity/lib/fetch";
-import { featuredHorsesQuery, pageBySlugQuery, siteSettingsQuery } from "@/sanity/lib/queries";
+import { featuredHorsesQuery, pageBySlugQuery } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
-import { HorsesQueryResult, SiteSettingsQueryResult, PageBySlugQueryResult } from "@/../sanity.types";
+import { HorsesQueryResult, PageBySlugQueryResult } from "@/../sanity.types";
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default async function HomePage() {
-  const [page, horses, settings] = await Promise.all([
+  const [page, horses] = await Promise.all([
     sanityFetch<PageBySlugQueryResult>(pageBySlugQuery, { slug: "uvod" }),
     sanityFetch<HorsesQueryResult>(featuredHorsesQuery),
-    sanityFetch<SiteSettingsQueryResult>(siteSettingsQuery),
   ]);
 
   return (
@@ -18,25 +17,14 @@ export default async function HomePage() {
       {/* ── HERO ─────────────────────────────────────────── */}
       <section className="relative min-h-screen flex flex-col overflow-hidden">
 
-        {settings?.heroImage ? (
-          <Image
-            src={urlFor(settings.heroImage).width(1920).height(1080).fit("crop").auto("format").url()}
-            alt={settings.heroImage.alt ?? "Kůň jezdeckého klubu Šilheřovice"}
-            fill
-            sizes="100vw"
-            className="object-cover"
-            priority
-          />
-        ) : (
-          <Image
-            src="/hero-horse2.jpg"
-            alt="Kůň jezdeckého klubu Šilheřovice"
-            fill
-            sizes="100vw"
-            className="object-cover"
-            priority
-          />
-        )}
+        <Image
+          src="/hero-horse2.jpg"
+          alt="Kůň jezdeckého klubu Šilheřovice"
+          fill
+          sizes="100vw"
+          className="object-cover"
+          priority
+        />
 
         {/* Tmavý overlay */}
         <div className="absolute inset-0 bg-black/40" />

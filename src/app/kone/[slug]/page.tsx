@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import PhotoGallery from "@/components/PhotoGallery";
+import Breadcrumb from "@/components/Breadcrumb";
 
 const statusLabel: Record<string, string> = {
   active: "Aktivní",
@@ -38,27 +39,25 @@ export default async function HorseDetailPage({ params }: { params: Promise<{ sl
 
   return (
     <>
-      {/* ── SUBHERO ────────────────────────────────────── */}
-      <section className="bg-cream pt-28 pb-10 sm:pt-32 sm:pb-12 border-b border-ink/8">
-        <div className="max-w-6xl mx-auto px-6">
-          <Link
-            href="/kone"
-            className="inline-block text-[10px] tracking-[0.25em] uppercase text-ink/40 hover:text-ink/70 transition-colors mb-6"
-          >
-            ← Všichni koně
-          </Link>
-          <div className="flex items-end flex-wrap gap-4">
-            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-light text-ink">
-              <em>{horse.name}</em>
-            </h1>
-            {horse.status && (
-              <span className="mb-1 text-[9px] tracking-[0.2em] uppercase border border-gold/40 text-gold px-3 py-1.5">
-                {statusLabel[horse.status] ?? horse.status}
-              </span>
-            )}
-          </div>
+      <Breadcrumb crumbs={[
+        { label: "Domů", href: "/" },
+        { label: "Naši koně", href: "/kone" },
+        { label: horse.name ?? "Kůň" },
+      ]} />
+
+      {/* ── NÁZEV KONĚ ─────────────────────────────────── */}
+      <div className="bg-cream border-b border-ink/8">
+        <div className="max-w-6xl mx-auto px-6 pb-10 sm:pb-12 flex items-end flex-wrap gap-4">
+          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-light text-ink">
+            <em>{horse.name}</em>
+          </h1>
+          {horse.status && (
+            <span className="mb-1 text-[9px] tracking-[0.2em] uppercase border border-gold/40 text-gold px-3 py-1.5">
+              {statusLabel[horse.status] ?? horse.status}
+            </span>
+          )}
         </div>
-      </section>
+      </div>
 
       {/* ── HLAVNÍ OBSAH ───────────────────────────────── */}
       <section className="bg-cream">

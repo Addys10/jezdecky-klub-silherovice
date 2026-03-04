@@ -55,8 +55,7 @@ export const siteSettingsQuery = defineQuery(`
     phone,
     email,
     facebook,
-    instagram,
-    heroImage
+    instagram
   }
 `)
 

@@ -2,6 +2,7 @@ import { sanityFetch } from "@/sanity/lib/fetch";
 import { pageBySlugQuery } from "@/sanity/lib/queries";
 import { PageBySlugQueryResult } from "@/../sanity.types";
 import { PortableText } from "@portabletext/react";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata = {
   title: "O nás",
@@ -28,14 +29,7 @@ export default async function ONasPage() {
 
   return (
     <>
-      {/* ── SUBHERO ────────────────────────────────────── */}
-      <section className="bg-cream pt-28 pb-10 sm:pt-32 sm:pb-12 border-b border-ink/8">
-        <div className="max-w-6xl mx-auto px-6">
-          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-light leading-tight text-ink">
-            O <em>nás</em>
-          </h1>
-        </div>
-      </section>
+      <Breadcrumb crumbs={[{ label: "Domů", href: "/" }, { label: "O nás" }]} />
 
       {/* ── OBSAH ZE SANITY ────────────────────────────── */}
       {page?.body && (

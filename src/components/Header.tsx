@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -13,9 +14,22 @@ const links = [
 
 export default function Header() {
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
+  const isHome = pathname === '/'
+
+  useEffect(() => {
+    if (!isHome) return
+    const handler = () => setScrolled(window.scrollY > 60)
+    handler()
+    window.addEventListener('scroll', handler, { passive: true })
+    return () => window.removeEventListener('scroll', handler)
+  }, [isHome])
+
+  const transparent = isHome && !scrolled
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-20 bg-forest border-b border-cream/10">
+    <header className={`fixed top-0 left-0 right-0 z-20 transition-colors duration-500 ${transparent ? 'bg-transparent border-transparent' : 'bg-forest border-b border-cream/10'}`}>
 
       {/* ── HLAVNÍ LIŠTA ─────────────────────────────── */}
       <nav className="max-w-6xl mx-auto px-6 py-5 sm:py-6 flex items-center justify-between gap-4">

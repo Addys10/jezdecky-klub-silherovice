@@ -37,15 +37,6 @@ export const siteSettings = defineType({
       title: 'Instagram URL',
       type: 'url',
     }),
-    defineField({
-      name: 'heroImage',
-      title: 'Hero obrázek (úvodní stránka)',
-      type: 'image',
-      options: { hotspot: true },
-      fields: [
-        defineField({ name: 'alt', type: 'string', title: 'Popis obrázku' }),
-      ],
-    }),
   ],
   // Singleton — prevent creating multiple documents
   // @ts-ignore

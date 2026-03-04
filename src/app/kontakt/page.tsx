@@ -2,6 +2,7 @@ import { sanityFetch } from "@/sanity/lib/fetch";
 import { pageBySlugQuery, siteSettingsQuery } from "@/sanity/lib/queries";
 import { SiteSettingsQueryResult, PageBySlugQueryResult } from "@/../sanity.types";
 import { PortableText } from "@portabletext/react";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata = {
   title: "Kontakt",
@@ -16,92 +17,80 @@ export default async function KontaktPage() {
 
   return (
     <>
-      {/* ── SUBHERO ────────────────────────────────────── */}
-      <section className="bg-cream pt-28 pb-10 sm:pt-32 sm:pb-12 border-b border-ink/8">
-        <div className="max-w-6xl mx-auto px-6">
-          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-light leading-tight text-ink">
-            <em>Kontakt</em>
-          </h1>
-        </div>
-      </section>
+      <Breadcrumb crumbs={[{ label: "Domů", href: "/" }, { label: "Kontakt" }]} />
 
-      {/* ── KONTAKT GRID ───────────────────────────────── */}
+      {/* ── KONTAKT ────────────────────────────────────── */}
       <section className="bg-cream">
-        <div className="max-w-6xl mx-auto px-6 py-16 sm:py-20 lg:py-24 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] lg:min-h-[600px] gap-0">
 
-          {/* Levý sloupec */}
-          <div className="space-y-12">
+            {/* Levý sloupec: info */}
+            <div className="py-16 sm:py-20 lg:py-24 lg:pr-16 lg:border-r lg:border-ink/8 space-y-10">
 
-            {/* Adresa */}
-            {(settings?.address || settings?.city) && (
-              <div>
-                <p className="text-[10px] tracking-[0.25em] uppercase text-gold font-medium mb-4">Adresa</p>
-                <address className="not-italic text-ink/70 text-base leading-relaxed">
-                  {settings.address && <span className="block">{settings.address}</span>}
-                  {settings.city && <span className="block">{settings.city}</span>}
-                </address>
-              </div>
-            )}
+              {(settings?.address || settings?.city) && (
+                <div>
+                  <p className="text-[9px] tracking-[0.3em] uppercase text-ink/30 mb-3">Adresa</p>
+                  <address className="not-italic font-heading text-2xl sm:text-3xl font-light text-ink leading-snug">
+                    {settings.address && <span className="block">{settings.address}</span>}
+                    {settings.city && <span className="block text-ink/45">{settings.city}</span>}
+                  </address>
+                </div>
+              )}
 
-            {/* Telefon + email */}
-            {(settings?.phone || settings?.email) && (
-              <div>
-                <p className="text-[10px] tracking-[0.25em] uppercase text-gold font-medium mb-4">Spojení</p>
-                <ul className="space-y-2">
-                  {settings?.phone && (
-                    <li>
-                      <a
-                        href={`tel:${settings.phone.replace(/\s/g, "")}`}
-                        className="text-ink/70 hover:text-ink transition-colors text-base"
-                      >
-                        {settings.phone}
-                      </a>
-                    </li>
-                  )}
-                  {settings?.email && (
-                    <li>
-                      <a
-                        href={`mailto:${settings.email}`}
-                        className="text-ink/70 hover:text-ink transition-colors text-base"
-                      >
-                        {settings.email}
-                      </a>
-                    </li>
-                  )}
-                </ul>
-              </div>
-            )}
+              {settings?.phone && (
+                <div>
+                  <p className="text-[9px] tracking-[0.3em] uppercase text-ink/30 mb-3">Telefon</p>
+                  <a
+                    href={`tel:${settings.phone.replace(/\s/g, "")}`}
+                    className="font-heading text-3xl sm:text-4xl font-light text-ink hover:text-gold transition-colors"
+                  >
+                    {settings.phone}
+                  </a>
+                </div>
+              )}
 
-            {/* Obsah ze Sanity (doplňující text) */}
-            {page?.body && (
-              <div>
-                <div className="prose prose-stone prose-sm max-w-none [&_p]:text-ink/70 [&_p]:leading-relaxed [&_h2]:font-heading [&_h2]:font-normal [&_h2]:text-lg [&_h2]:text-ink [&_h2]:mb-2 [&_h2]:mt-0">
+              {settings?.email && (
+                <div>
+                  <p className="text-[9px] tracking-[0.3em] uppercase text-ink/30 mb-3">E-mail</p>
+                  <a
+                    href={`mailto:${settings.email}`}
+                    className="font-heading text-2xl sm:text-3xl font-light text-ink hover:text-gold transition-colors break-all"
+                  >
+                    {settings.email}
+                  </a>
+                </div>
+              )}
+
+              {page?.body && (
+                <div className="pt-6 border-t border-ink/8 prose prose-stone prose-sm max-w-none [&_p]:text-ink/55 [&_p]:leading-relaxed">
                   <PortableText value={page.body} />
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* CTA */}
-            {settings?.email && (
-              <a
-                href={`mailto:${settings.email}`}
-                className="inline-flex items-center gap-3 bg-gold text-forest text-xs font-semibold tracking-[0.2em] uppercase px-8 py-4 hover:bg-gold-light transition-colors duration-300"
-              >
-                Napište nám →
-              </a>
-            )}
+              {settings?.email && (
+                <a
+                  href={`mailto:${settings.email}`}
+                  className="inline-flex items-center gap-3 bg-gold text-forest text-xs font-semibold tracking-[0.2em] uppercase px-8 py-4 hover:bg-gold-light transition-colors duration-300"
+                >
+                  Napište nám →
+                </a>
+              )}
+            </div>
+
+            {/* Pravý sloupec: mapa */}
+            <div className="h-72 sm:h-96 lg:h-auto relative overflow-hidden lg:pl-0">
+              <iframe
+                src="https://www.openstreetmap.org/export/embed.html?bbox=18.255%2C49.930%2C18.315%2C49.960&layer=mapnik&marker=49.9427%2C18.2809"
+                width="100%"
+                height="100%"
+                className="absolute inset-0 w-full h-full grayscale opacity-80"
+                style={{ border: 0 }}
+                loading="lazy"
+                title="Mapa – JK Šilheřovice"
+              />
+            </div>
+
           </div>
-
-          {/* Pravý sloupec: dekorativní typografie */}
-          <div className="hidden lg:flex flex-col items-end justify-center">
-            <p className="font-heading text-[9rem] xl:text-[11rem] leading-none font-light italic text-forest/8 select-none tracking-tight">
-              JK
-            </p>
-            <p className="font-heading text-2xl xl:text-3xl font-light text-forest/20 tracking-[0.15em] uppercase -mt-4">
-              Šilheřovice
-            </p>
-          </div>
-
         </div>
       </section>
 

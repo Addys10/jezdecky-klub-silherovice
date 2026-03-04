@@ -4,6 +4,7 @@ import { galleryQuery } from "@/sanity/lib/queries";
 import { GalleryQueryResult } from "@/../sanity.types";
 import { urlFor } from "@/sanity/lib/image";
 import GalleryMasonry from "@/components/GalleryMasonry";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
   title: "Galerie",
@@ -19,14 +20,7 @@ export default async function GaleriePage() {
 
   return (
     <>
-      {/* ── SUBHERO ───────────────────────────────────────── */}
-      <section className="bg-cream pt-28 pb-10 sm:pt-32 sm:pb-12 border-b border-ink/8">
-        <div className="max-w-6xl mx-auto px-6">
-          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-light text-ink">
-            <em>Galerie</em>
-          </h1>
-        </div>
-      </section>
+      <Breadcrumb crumbs={[{ label: "Domů", href: "/" }, { label: "Galerie" }]} />
 
       {/* ── FOTKY ─────────────────────────────────────────── */}
       <section className="bg-cream">

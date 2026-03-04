@@ -4,6 +4,7 @@ import { urlFor } from "@/sanity/lib/image";
 import { HorsesQueryResult } from "@/../sanity.types";
 import Image from "next/image";
 import Link from "next/link";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata = {
   title: "Naši koně",
@@ -21,14 +22,7 @@ export default async function KonePage() {
 
   return (
     <>
-      {/* ── SUBHERO ────────────────────────────────────── */}
-      <section className="bg-cream pt-28 pb-10 sm:pt-32 sm:pb-12 border-b border-ink/8">
-        <div className="max-w-6xl mx-auto px-6">
-          <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-light leading-tight text-ink">
-            Naši <em>koně</em>
-          </h1>
-        </div>
-      </section>
+      <Breadcrumb crumbs={[{ label: "Domů", href: "/" }, { label: "Naši koně" }]} />
 
       {/* ── GRID ───────────────────────────────────────── */}
       <section className="bg-cream">
