@@ -3,6 +3,7 @@ import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import StudioGuard from "@/components/StudioGuard";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { siteSettingsQuery } from "@/sanity/lib/queries";
 import { SiteSettingsQueryResult } from "@/../sanity.types";
@@ -69,7 +70,7 @@ export default async function RootLayout({
         />
         <Header />
         <main className="flex-1">{children}</main>
-        <Footer />
+        <StudioGuard><Footer /></StudioGuard>
       </body>
     </html>
   );

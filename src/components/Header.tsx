@@ -28,6 +28,8 @@ export default function Header() {
 
   const transparent = isHome && !scrolled
 
+  if (pathname.startsWith('/studio')) return null
+
   return (
     <header className={`fixed top-0 left-0 right-0 z-20 transition-colors duration-500 ${transparent ? 'bg-transparent border-transparent' : 'bg-forest border-b border-cream/10'}`}>
 
