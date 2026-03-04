@@ -93,14 +93,14 @@ export default async function HorseDetailPage({ params }: { params: Promise<{ sl
                   <div className="relative">
                     <div className="grid grid-cols-2 gap-4">
                       {horse.sire && (
-                        <div className="border border-ink/10 p-4 bg-forest/3">
-                          <p className="text-[9px] tracking-[0.2em] uppercase text-gold mb-1">Otec</p>
+                        <div className="border border-sky-200 p-4 bg-sky-50/60">
+                          <p className="text-[9px] tracking-[0.2em] uppercase text-sky-400/80 mb-1">Otec</p>
                           <p className="font-heading text-lg font-light italic text-ink">{horse.sire}</p>
                         </div>
                       )}
                       {horse.dam && (
-                        <div className="border border-ink/10 p-4 bg-forest/3">
-                          <p className="text-[9px] tracking-[0.2em] uppercase text-gold mb-1">Matka</p>
+                        <div className="border border-rose-200 p-4 bg-rose-50/60">
+                          <p className="text-[9px] tracking-[0.2em] uppercase text-rose-400/80 mb-1">Matka</p>
                           <p className="font-heading text-lg font-light italic text-ink">{horse.dam}</p>
                         </div>
                       )}
@@ -109,11 +109,11 @@ export default async function HorseDetailPage({ params }: { params: Promise<{ sl
                       <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gold/30" />
                       <div className="absolute top-0 left-1/2 w-px h-full bg-gold/30 -translate-x-1/2" />
                     </div>
-                    <div className="border border-gold/40 p-5 bg-forest text-cream text-center">
-                      <p className="text-[9px] tracking-[0.2em] uppercase text-gold/70 mb-2">Kůň</p>
-                      <p className="font-heading text-2xl font-light italic">{horse.name}</p>
+                    <div className="w-1/2 mx-auto border border-ink/20 p-4 bg-forest/5 text-center">
+                      <p className="text-[9px] tracking-[0.2em] uppercase text-gold mb-1">Kůň</p>
+                      <p className="font-heading text-lg font-light italic text-ink">{horse.name}</p>
                       {horse.breed && (
-                        <p className="text-cream/50 text-xs tracking-wider mt-1">{horse.breed} · {horse.birthYear}</p>
+                        <p className="text-ink/40 text-xs tracking-wider mt-0.5">{horse.breed} · {horse.birthYear}</p>
                       )}
                     </div>
                   </div>
