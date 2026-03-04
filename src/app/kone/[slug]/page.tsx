@@ -1,8 +1,7 @@
-import { client } from "@/sanity/lib/client";
 import { sanityFetch } from "@/sanity/lib/fetch";
-import { horseBySlugQuery, horsesSlugsQuery } from "@/sanity/lib/queries";
+import { horseBySlugQuery } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
-import { HorseBySlugQueryResult, HorsesSlugsQueryResult } from "@/../sanity.types";
+import { HorseBySlugQueryResult } from "@/../sanity.types";
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,14 +15,9 @@ const statusLabel: Record<string, string> = {
   forSale: "Na prodej",
 };
 
-export async function generateStaticParams() {
-  const slugs = await client.fetch<HorsesSlugsQueryResult>(horsesSlugsQuery);
-  return slugs.map((s) => ({ slug: s.slug }));
-}
-
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const horse = await client.fetch<HorseBySlugQueryResult>(horseBySlugQuery, { slug });
+  const horse = await sanityFetch<HorseBySlugQueryResult>(horseBySlugQuery, { slug });
   if (!horse) return {};
   return { title: horse.name ?? "Kůň" };
 }
