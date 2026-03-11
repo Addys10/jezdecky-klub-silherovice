@@ -1,12 +1,12 @@
 import type { MetadataRoute } from "next";
-import { client } from "@/sanity/lib/client";
+import { sanityFetch } from "@/sanity/lib/fetch";
 import { horsesSlugsQuery } from "@/sanity/lib/queries";
 import { HorsesSlugsQueryResult } from "@/../sanity.types";
 
 const BASE_URL = "https://jk-silherovice.cz";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const slugs = await client.fetch<HorsesSlugsQueryResult>(horsesSlugsQuery);
+  const slugs = await sanityFetch<HorsesSlugsQueryResult>(horsesSlugsQuery);
 
   const horseUrls: MetadataRoute.Sitemap = slugs.map((s) => ({
     url: `${BASE_URL}/kone/${s.slug}`,

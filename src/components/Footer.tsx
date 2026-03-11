@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { sanityFetch } from "@/sanity/lib/fetch";
-import { siteSettingsQuery } from "@/sanity/lib/queries";
 import { SiteSettingsQueryResult } from "@/../sanity.types";
 
 const navLinks = [
@@ -10,9 +8,7 @@ const navLinks = [
   { href: "/kontakt", label: "Kontakt" },
 ];
 
-export default async function Footer() {
-  const settings = await sanityFetch<SiteSettingsQueryResult>(siteSettingsQuery);
-
+export default function Footer({ settings }: { settings: SiteSettingsQueryResult }) {
   return (
     <footer className="bg-forest text-cream">
 

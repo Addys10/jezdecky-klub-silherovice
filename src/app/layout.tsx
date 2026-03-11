@@ -70,7 +70,7 @@ export default async function RootLayout({
         />
         <Header />
         <main className="flex-1">{children}</main>
-        <StudioGuard><Footer /></StudioGuard>
+        <StudioGuard><Footer settings={settings} /></StudioGuard>
       </body>
     </html>
   );
